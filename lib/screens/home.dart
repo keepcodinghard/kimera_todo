@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:kimera_todo/theme/custom_colors.dart';
 import 'package:kimera_todo/widgets/custom_appbar.dart';
 import 'package:kimera_todo/widgets/custom_drawer.dart';
@@ -30,12 +31,12 @@ class Home extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context, {String name = 'Stranger'}) {
     TextStyle textStyle = TextStyle(
-        color: Colors.white,
+        color: CustomColors.primary_text,
         fontSize: Theme.of(context).textTheme.headline4!.fontSize,
         fontFamily: Theme.of(context).textTheme.headline4!.fontFamily,
         fontWeight: FontWeight.bold);
 
-    final String title = "What's up," + name;
+    final String title = "What's up, " + name + "!";
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
@@ -62,8 +63,14 @@ class Home extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildCategoryBox(context, name: 'Bussiness', tasks: 40),
-                    _buildCategoryBox(context, name: 'Personal', tasks: 15),
+                    _buildCategoryBox(context,
+                        name: 'Bussiness',
+                        tasks: 40,
+                        progressBarColor: CustomColors.button),
+                    _buildCategoryBox(context,
+                        name: 'Personal',
+                        tasks: 15,
+                        progressBarColor: Colors.blue),
                     _buildCategoryBox(context, name: 'Shares', tasks: 12),
                   ],
                 ),
@@ -87,7 +94,9 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildCategoryBox(BuildContext context,
-      {String name = 'Unknown', int tasks = 0}) {
+      {String name = 'Unknown',
+      int tasks = 0,
+      Color progressBarColor: Colors.red}) {
     List<BoxShadow> boxsShadow = [
       BoxShadow(
         color: CustomColors.secundary_background.withOpacity(0.4),
@@ -110,6 +119,29 @@ class Home extends StatelessWidget {
         fontSize: 15,
         fontWeight: FontWeight.values[5]);
 
+    Container tasksLabel = Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: 10),
+        child: Text(
+          tasks.toString() + ' tasks',
+          style: tasksStyle,
+        ));
+
+    Container titleCategory = Container(
+        margin: EdgeInsets.only(bottom: 10),
+        width: double.infinity,
+        child: Text(name, style: categoryStyle));
+
+    Container lineProcess = Container(
+      margin: EdgeInsets.only(top: 10),
+      width: double.infinity,
+      height: 3,
+      color: Colors.grey,
+      child: CustomPaint(
+          painter:
+              DrawHorizontalLine(color: progressBarColor, percentage: 0.5)),
+    );
+
     return Container(
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),
@@ -117,17 +149,7 @@ class Home extends StatelessWidget {
         alignment: AlignmentDirectional.centerStart,
         height: 100,
         decoration: boxDecoration,
-        child: Column(children: [
-          Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: 10),
-              child: Text(
-                tasks.toString() + ' tasks',
-                style: tasksStyle,
-              )),
-          Container(
-              width: double.infinity, child: Text(name, style: categoryStyle))
-        ]));
+        child: Column(children: [tasksLabel, titleCategory, lineProcess]));
   }
 
   // Widget _buildTodayTasksBlock(BuildContext context) {
@@ -159,5 +181,35 @@ class Home extends StatelessWidget {
         fontFamily: Theme.of(context).textTheme.headline6!.fontFamily,
         fontWeight: FontWeight.normal);
     return textStyle;
+  }
+}
+
+class DrawHorizontalLine extends CustomPainter {
+  ///
+  /// percentage is a value between 0 and 1, which represent a percentage where 1 is 100%
+  DrawHorizontalLine(
+      {this.percentage: 0.0, this.color: Colors.red, this.width: 3}) {
+    AssertionError();
+
+    _paint
+      ..color = color
+      ..strokeWidth = width
+      ..strokeCap = StrokeCap.round;
+  }
+
+  final Paint _paint = Paint();
+  final double percentage;
+  final double width;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawLine(
+        Offset(0.0, 1.5), Offset(size.width * percentage, 1.5), _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
