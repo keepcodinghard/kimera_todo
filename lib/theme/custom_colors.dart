@@ -7,4 +7,7 @@ class CustomColors {
   static const Color lines = Color(0xFFc11ce6);
   static const Color menu_option_icon = Color(0xFF3e5697);
   static const Color menu_option_text = Color(0xFFc5d6f4);
+  static const Color category_section_header = Color(0xFF90acfb);
+  static const Color category_quantity_task = Color(0xFF90acfb);
+  static const Color primary_text = Colors.white;
 }
