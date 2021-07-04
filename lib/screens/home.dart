@@ -15,6 +15,11 @@ class Home extends StatelessWidget {
       drawer: CustomDrawer(),
       backgroundColor: Theme.of(context).backgroundColor,
       body: _mainBody(context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+        backgroundColor: CustomColors.button,
+      ),
     );
   }
 
@@ -24,7 +29,7 @@ class Home extends StatelessWidget {
       children: [
         _buildHeader(context, name: 'Olivia'),
         _buildCategoryBlock(context),
-        //_buildTodayTasksBlock(context)
+        _buildTodayTasksBlock(context)
       ],
     );
   }
@@ -64,7 +69,7 @@ class Home extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     _buildCategoryBox(context,
-                        name: 'Bussiness',
+                        name: 'Business',
                         tasks: 40,
                         progressBarColor: CustomColors.button),
                     _buildCategoryBox(context,
@@ -152,27 +157,42 @@ class Home extends StatelessWidget {
         child: Column(children: [tasksLabel, titleCategory, lineProcess]));
   }
 
-  // Widget _buildTodayTasksBlock(BuildContext context) {
-  //   Expanded header = _buildHeaderSectionBlock(context, 'TODAY\'S TASKS');
-  //   return Container(
-  //     height: MediaQuery.of(context).size.height * 0.55,
-  //     color: Colors.lightBlue,
-  //     margin: EdgeInsets.only(top: 10),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.start,
-  //       children: [
-  //         header,
-  //         Expanded(
-  //           flex: 9,
-  //           child: Container(
-  //             color: Colors.green,
-  //             padding: EdgeInsets.only(top: 10, bottom: 10),
-  //           ),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildTodayTasksBlock(BuildContext context) {
+    Expanded header = _buildHeaderSectionBlock(context, 'TODAY\'S TASKS');
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.55,
+      margin: EdgeInsets.only(top: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          header,
+          Expanded(
+            flex: 9,
+            child: Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildTask(context, 'Call my friend Romeo', true,
+                        categoryColor: Colors.blue),
+                    _buildTask(
+                        context, 'Make great flutter appliactions', false,
+                        categoryColor: CustomColors.button),
+                    _buildTask(context, 'Go out to find my dog', true,
+                        categoryColor: Colors.blue),
+                    _buildTask(context, 'Show to Boyo this view', true,
+                        categoryColor: CustomColors.button),
+                    _buildTask(context, 'Buy beers at supermarker', false,
+                        categoryColor: Colors.blue),
+                    _buildTask(context, 'Does english homework', true),
+                  ],
+                )),
+          )
+        ],
+      ),
+    );
+  }
 
   TextStyle _getTextHeaderSectionStyle(BuildContext context) {
     TextStyle textStyle = TextStyle(
@@ -181,6 +201,59 @@ class Home extends StatelessWidget {
         fontFamily: Theme.of(context).textTheme.headline6!.fontFamily,
         fontWeight: FontWeight.normal);
     return textStyle;
+  }
+
+  Widget _buildTask(BuildContext context, String title, bool isDone,
+      {Color categoryColor: Colors.red}) {
+    TextStyle textStyle =
+        TextStyle(color: CustomColors.primary_text, fontSize: 16);
+
+    TextStyle textStyleLineThrough = TextStyle(
+        color: CustomColors.primary_text,
+        fontSize: 16,
+        decoration: TextDecoration.lineThrough,
+        decorationStyle: TextDecorationStyle.solid,
+        decorationThickness: 2);
+
+    Text textTitle =
+        Text(title, style: isDone ? textStyleLineThrough : textStyle);
+
+    List<BoxShadow> boxsShadow = [
+      BoxShadow(
+        color: CustomColors.secundary_background.withOpacity(0.4),
+        spreadRadius: 1,
+        blurRadius: 5,
+        offset: Offset(0, 5),
+      ),
+    ];
+    BoxDecoration boxDecoration = BoxDecoration(
+        color: CustomColors.secundary_background,
+        borderRadius: BorderRadius.all(Radius.circular(22)),
+        boxShadow: boxsShadow);
+
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 6),
+      height: 70,
+      decoration: boxDecoration,
+      alignment: AlignmentDirectional.centerStart,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+              flex: 2,
+              child: IconButton(
+                  onPressed: () => {},
+                  icon: Icon(
+                    isDone ? Icons.check_circle_outline : Icons.circle_outlined,
+                    color: categoryColor,
+                    size: 29,
+                  ))),
+          Expanded(flex: 8, child: textTitle)
+        ],
+      ),
+    );
   }
 }
 
