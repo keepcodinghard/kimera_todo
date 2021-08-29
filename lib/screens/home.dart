@@ -116,18 +116,15 @@ class Home extends StatelessWidget {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    _buildTask(context, 'Call my friend Romeo', true,
+                    _buildTask('Call my friend Romeo', true,
                         categoryColor: Colors.blue),
-                    _buildTask(
-                        context, 'Make great flutter appliactions', false,
-                        categoryColor: CustomColors.button),
-                    _buildTask(context, 'Go out to find my dog', true,
+                    _buildTask('Make great flutter appliactions', false,
+                        categoryColor: Colors.white),
+                    _buildTask('Go out to find my dog', true,
                         categoryColor: Colors.blue),
-                    _buildTask(context, 'Show to Boyo this view', true,
-                        categoryColor: CustomColors.button),
-                    _buildTask(context, 'Buy beers at supermarker', false,
+                    _buildTask('Buy beers at supermarker', false,
                         categoryColor: Colors.blue),
-                    _buildTask(context, 'Does english homework', true),
+                    _buildTask('Does english homework', true),
                   ],
                 )),
           )
@@ -145,7 +142,7 @@ class Home extends StatelessWidget {
     return textStyle;
   }
 
-  Widget _buildTask(BuildContext context, String title, bool isDone,
+  Widget _buildTask(String title, bool isDone,
       {Color categoryColor: Colors.red}) {
     return TaskItem(title: title, isDone: isDone, categoryColor: categoryColor);
   }
