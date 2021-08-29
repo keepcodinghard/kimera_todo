@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kimera_todo/components/category_box.dart';
-import 'package:kimera_todo/components/horizontal_line.dart';
+import 'package:kimera_todo/components/category_item.dart';
 import 'package:kimera_todo/components/task_item.dart';
 
 import 'package:kimera_todo/theme/custom_colors.dart';
@@ -62,30 +62,20 @@ class Home extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           header,
-          Expanded(
-              flex: 9,
-              child: Container(
-                margin: EdgeInsets.only(top: 15, bottom: 15),
-                width: double.infinity,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildCategoryBox(context,
-                        name: 'Business',
-                        tasks: 40,
-                        progressBarColor: CustomColors.button),
-                    _buildCategoryBox(context,
-                        name: 'Personal',
-                        tasks: 15,
-                        progressBarColor: Colors.blue),
-                    _buildCategoryBox(context, name: 'Shares', tasks: 12),
-                  ],
-                ),
-              ))
+          Expanded(flex: 9, child: _buildCategoryBox(context))
         ],
       ),
     );
+  }
+
+  CategoryBox _buildCategoryBox(BuildContext context) {
+    return CategoryBox(categoryItems: [
+      _buildCategoryItem(
+          name: 'Business', tasks: 40, progressBarColor: Colors.white),
+      _buildCategoryItem(
+          name: 'Personal', tasks: 15, progressBarColor: Colors.blue),
+      _buildCategoryItem(name: 'Shares', tasks: 1),
+    ], direction: Axis.horizontal);
   }
 
   Expanded _buildHeaderSectionBlock(BuildContext context, String title) {
@@ -101,11 +91,11 @@ class Home extends StatelessWidget {
     return header;
   }
 
-  Widget _buildCategoryBox(BuildContext context,
+  CategoryItem _buildCategoryItem(
       {String name = 'Unknown',
       int tasks = 0,
       Color progressBarColor: Colors.red}) {
-    return CategoryBox(
+    return CategoryItem(
         name: name, tasks: tasks, progressBarColor: progressBarColor);
   }
 
