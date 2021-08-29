@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:kimera_todo/components/category_box.dart';
+import 'package:kimera_todo/components/horizontal_line.dart';
+import 'package:kimera_todo/components/task_item.dart';
 
 import 'package:kimera_todo/theme/custom_colors.dart';
 import 'package:kimera_todo/widgets/custom_appbar.dart';
@@ -102,59 +105,8 @@ class Home extends StatelessWidget {
       {String name = 'Unknown',
       int tasks = 0,
       Color progressBarColor: Colors.red}) {
-    List<BoxShadow> boxsShadow = [
-      BoxShadow(
-        color: CustomColors.secundary_background.withOpacity(0.4),
-        spreadRadius: 3,
-        blurRadius: 5,
-        offset: Offset(0, 5),
-      ),
-    ];
-
-    BoxDecoration boxDecoration = BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        color: CustomColors.secundary_background,
-        boxShadow: boxsShadow);
-
-    TextStyle tasksStyle =
-        TextStyle(color: CustomColors.category_quantity_task, fontSize: 12);
-
-    TextStyle categoryStyle = TextStyle(
-        color: CustomColors.primary_text,
-        fontSize: 15,
-        fontWeight: FontWeight.values[5]);
-
-    Container tasksLabel = Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 10),
-        child: Text(
-          tasks.toString() + ' tasks',
-          style: tasksStyle,
-        ));
-
-    Container titleCategory = Container(
-        margin: EdgeInsets.only(bottom: 10),
-        width: double.infinity,
-        child: Text(name, style: categoryStyle));
-
-    Container lineProcess = Container(
-      margin: EdgeInsets.only(top: 10),
-      width: double.infinity,
-      height: 3,
-      color: Colors.grey,
-      child: CustomPaint(
-          painter:
-              DrawHorizontalLine(color: progressBarColor, percentage: 0.5)),
-    );
-
-    return Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),
-        width: MediaQuery.of(context).size.width * 0.45,
-        alignment: AlignmentDirectional.centerStart,
-        height: 100,
-        decoration: boxDecoration,
-        child: Column(children: [tasksLabel, titleCategory, lineProcess]));
+    return CategoryBox(
+        name: name, tasks: tasks, progressBarColor: progressBarColor);
   }
 
   Widget _buildTodayTasksBlock(BuildContext context) {
@@ -205,84 +157,6 @@ class Home extends StatelessWidget {
 
   Widget _buildTask(BuildContext context, String title, bool isDone,
       {Color categoryColor: Colors.red}) {
-    TextStyle textStyle =
-        TextStyle(color: CustomColors.primary_text, fontSize: 16);
-
-    TextStyle textStyleLineThrough = TextStyle(
-        color: CustomColors.primary_text,
-        fontSize: 16,
-        decoration: TextDecoration.lineThrough,
-        decorationStyle: TextDecorationStyle.solid,
-        decorationThickness: 2);
-
-    Text textTitle =
-        Text(title, style: isDone ? textStyleLineThrough : textStyle);
-
-    List<BoxShadow> boxsShadow = [
-      BoxShadow(
-        color: CustomColors.secundary_background.withOpacity(0.4),
-        spreadRadius: 1,
-        blurRadius: 5,
-        offset: Offset(0, 5),
-      ),
-    ];
-    BoxDecoration boxDecoration = BoxDecoration(
-        color: CustomColors.secundary_background,
-        borderRadius: BorderRadius.all(Radius.circular(22)),
-        boxShadow: boxsShadow);
-
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(bottom: 6),
-      height: 70,
-      decoration: boxDecoration,
-      alignment: AlignmentDirectional.centerStart,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-              flex: 2,
-              child: IconButton(
-                  onPressed: () => {},
-                  icon: Icon(
-                    isDone ? Icons.check_circle_outline : Icons.circle_outlined,
-                    color: categoryColor,
-                    size: 29,
-                  ))),
-          Expanded(flex: 8, child: textTitle)
-        ],
-      ),
-    );
-  }
-}
-
-class DrawHorizontalLine extends CustomPainter {
-  ///
-  /// percentage is a value between 0 and 1, which represent a percentage where 1 is 100%
-  DrawHorizontalLine(
-      {this.percentage: 0.0, this.color: Colors.red, this.width: 3}) {
-    AssertionError();
-
-    _paint
-      ..color = color
-      ..strokeWidth = width
-      ..strokeCap = StrokeCap.round;
-  }
-
-  final Paint _paint = Paint();
-  final double percentage;
-  final double width;
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawLine(
-        Offset(0.0, 1.5), Offset(size.width * percentage, 1.5), _paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
+    return TaskItem(title: title, isDone: isDone, categoryColor: categoryColor);
   }
 }
