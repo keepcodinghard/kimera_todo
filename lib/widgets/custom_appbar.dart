@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({Key? key, required this.title}) : super(key: key);
+  CustomAppBar(
+      {Key? key, this.title: const Text('Title'), this.drawEmpty: false})
+      : super(key: key);
 
   final Text title;
+  final bool drawEmpty;
   @override
   Size get preferredSize => Size.fromHeight(60.0);
 
@@ -13,12 +16,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       elevation: 0, //this remove bottom shadow
       bottomOpacity: 0, //this remove bottom shadow
-      title: title,
-      actions: <Widget>[
-        IconButton(onPressed: _onSearch, icon: Icon(Icons.search)),
-        IconButton(
-            onPressed: _onNotification, icon: Icon(Icons.notifications_none))
-      ],
+      title: drawEmpty ? null : title,
+      automaticallyImplyLeading: !drawEmpty,
+      actions: drawEmpty
+          ? []
+          : <Widget>[
+              IconButton(onPressed: _onSearch, icon: Icon(Icons.search)),
+              IconButton(
+                  onPressed: _onNotification,
+                  icon: Icon(Icons.notifications_none))
+            ],
     );
   }
 
