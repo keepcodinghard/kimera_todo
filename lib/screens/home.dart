@@ -4,6 +4,7 @@ import 'package:kimera_todo/components/category_box.dart';
 import 'package:kimera_todo/components/category_item.dart';
 import 'package:kimera_todo/components/task_item.dart';
 import 'package:kimera_todo/screens/create_todo.dart';
+import 'package:kimera_todo/services/todo_service.dart';
 import 'package:kimera_todo/theme/custom_colors.dart';
 import 'package:kimera_todo/widgets/custom_appbar.dart';
 import 'package:kimera_todo/widgets/custom_drawer.dart';
@@ -104,6 +105,11 @@ class Home extends StatelessWidget {
   Widget _buildTodayTasksBlock(BuildContext context) {
     Expanded header = _buildHeaderSectionBlock(context, 'TODAY\'S TASKS');
 
+    var tasks = TodoService.getTodos().map((e) {
+      return _buildTask(e.title!, e.isDone,
+          categoryColor: Color(e.category!.color));
+    }).toList();
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.55,
       margin: EdgeInsets.only(top: 10),
@@ -117,17 +123,7 @@ class Home extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: ListView(
                   padding: EdgeInsets.zero,
-                  children: [
-                    _buildTask('Call my friend Romeo', true,
-                        categoryColor: Colors.blue),
-                    _buildTask('Make great flutter appliactions', false,
-                        categoryColor: Colors.white),
-                    _buildTask('Go out to find my dog', true,
-                        categoryColor: Colors.blue),
-                    _buildTask('Buy beers at supermarker', false,
-                        categoryColor: Colors.blue),
-                    _buildTask('Does english homework', true),
-                  ],
+                  children: tasks,
                 )),
           )
         ],
