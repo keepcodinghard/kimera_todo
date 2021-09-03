@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:kimera_todo/components/category_box.dart';
 import 'package:kimera_todo/components/category_item.dart';
 import 'package:kimera_todo/components/task_item.dart';
-
+import 'package:kimera_todo/screens/create_todo.dart';
 import 'package:kimera_todo/theme/custom_colors.dart';
 import 'package:kimera_todo/widgets/custom_appbar.dart';
 import 'package:kimera_todo/widgets/custom_drawer.dart';
@@ -19,7 +19,9 @@ class Home extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       body: _mainBody(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _launchNewTodoScreen(context);
+        },
         child: const Icon(Icons.add),
         backgroundColor: CustomColors.button,
       ),
@@ -145,5 +147,12 @@ class Home extends StatelessWidget {
   Widget _buildTask(String title, bool isDone,
       {Color categoryColor: Colors.red}) {
     return TaskItem(title: title, isDone: isDone, categoryColor: categoryColor);
+  }
+
+  void _launchNewTodoScreen(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => CreateTodo()),
+        (route) => false);
   }
 }
